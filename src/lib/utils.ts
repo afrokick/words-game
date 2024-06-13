@@ -19,3 +19,17 @@ export function rotate(cx: number, cy: number, x: number, y: number, angle: numb
 export function wait(ms: number) {
   return new Promise<void>(r => setTimeout(r, ms));
 }
+
+export function calculateSymbolsInWord(word: string) {
+  const totalSymbols: Record<string, number> = {} as any;
+
+  for (const s of word) {
+    if (totalSymbols[s] == null) {
+      totalSymbols[s] = 1;
+    } else {
+      totalSymbols[s]++;
+    }
+  }
+
+  return totalSymbols;
+}

@@ -14,11 +14,14 @@
   --words-bg-color: #2b344b;
   --words-green-color: #65bd65;
   --words-pink-color: #e96fa4;
+  --words-orange-color: #e9be6f;
   --words-white-cell-color: #f2f2f2;
   --words-white-text-color: #fff;
   --words-gray-text-color: #4d4d4d;
   --words-pink-shadow: #af638c;
+  --words-orange-shadow: #b99450;
   --words-white-shadow: #a6a8ab;
+  --words-green-shadow: #508853;
 }
 
 /* 1rem=1px */
@@ -26,6 +29,10 @@
 html {
   font-size: 1px;
   height: 100%;
+}
+
+button {
+  font-family: inherit;
 }
 
 *,

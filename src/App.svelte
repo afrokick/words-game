@@ -1,9 +1,28 @@
 <script lang="ts">
-  import Game from "./lib/Game.svelte";
+  import { onMount } from "svelte";
+  import Game from "./ui/Game.svelte";
+  import Win from "./ui/Win.svelte";
+  import { GlobalStore, UIStates } from "./lib/store";
+  import { onEvent } from "./lib/hooks";
+
+  let store = GlobalStore;
+  let uiState = store.uiState;
+
+  onMount(() => {
+    if (uiState !== UIStates.loading) return;
+
+    store.launchGame();
+  });
+
+  onEvent("uiStateChanged", (newState) => (uiState = newState));
 </script>
 
 <main>
-  <Game />
+  {#if uiState === UIStates.playing}
+    <Game />
+  {:else if uiState === UIStates.win}
+    <Win />
+  {/if}
 </main>
 
 <style>

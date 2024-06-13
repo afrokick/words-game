@@ -2,26 +2,22 @@
   import PossibleSymbol from "./PossibleSymbol.svelte";
   import SmallSymbolCell from "./SmallSymbolCell.svelte";
   import SymbolCell from "./SymbolCell.svelte";
-  import { onEvent } from "./hooks";
-  import { GlobalStore } from "./store";
+  import { onEvent } from "../lib/hooks";
+  import { GlobalStore } from "../lib/store";
 
   let store = GlobalStore;
-  let updated = {};
 
   $: lvl = store.persistedState.currentLvl;
   $: words = store.persistedState.words;
-  $: pickedSymbolsIndicies = store.persistedState.pickedSymbolsIndicies;
+  $: pickedSymbolsIndicies = store.pickedSymbolsIndicies;
   $: symbols = store.symbols;
 
   $: lvlText = `Уровень ${lvl}`;
 
-  store.generateWords().then(() => {
-    store = GlobalStore;
-  });
-
   onEvent("charPicked", () => (store = GlobalStore));
   onEvent("wordFound", () => (store = GlobalStore));
   onEvent("wordFailed", () => (store = GlobalStore));
+  onEvent("wordExisted", () => (store = GlobalStore));
 </script>
 
 <div class="game" on:mouseup={() => store.finishInput()}>
