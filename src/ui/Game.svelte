@@ -18,6 +18,7 @@
   onEvent("wordFound", () => (store = GlobalStore));
   onEvent("wordFailed", () => (store = GlobalStore));
   onEvent("wordExisted", () => (store = GlobalStore));
+  onEvent("uiStateChanged", () => (store = GlobalStore));
 </script>
 
 <div class="game" on:mouseup={() => store.finishInput()}>

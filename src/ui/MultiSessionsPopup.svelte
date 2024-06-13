@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { MultiSessions } from "../lib/multiSessions";
+  import { GlobalStore } from "../lib/store";
+
   $: titleText = `Две вкладки
 с игрой?`;
   $: messageText = `Похоже, игра открыта в 
@@ -13,7 +16,9 @@
   const onRefreshClicked = async () => {
     if (pressed) return;
     pressed = true;
-    window.location.reload();
+
+    await MultiSessions.startSession();
+    await GlobalStore.launchGame();
   };
 </script>
 

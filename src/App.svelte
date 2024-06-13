@@ -19,6 +19,7 @@
 
   onEvent("uiStateChanged", (newState) => (uiState = newState));
   onEvent("sessionExpired", () => (sessionExpired = true));
+  onEvent("sessionUpdated", () => (sessionExpired = false));
 </script>
 
 <main>
