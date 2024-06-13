@@ -118,7 +118,7 @@ class Store {
   }
 
   private isLvlSolved(): boolean {
-    return this.persistedState.words.every(w => w.finished);
+    return this.persistedState.words.length > 0 && this.persistedState.words.every(w => w.finished);
   }
 
   async finishInput() {
