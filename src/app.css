@@ -22,6 +22,7 @@
   --words-orange-shadow: #b99450;
   --words-white-shadow: #a6a8ab;
   --words-green-shadow: #508853;
+  --words-line-color: #638ec4;
 }
 
 /* 1rem=1px */
@@ -33,6 +34,9 @@ html {
 
 button {
   font-family: inherit;
+  outline: none;
+  touch-action: none;
+  -ms-touch-action: none;
 }
 
 *,
