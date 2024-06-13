@@ -3,7 +3,6 @@ import { PersistedStorage } from "./persistedStorage";
 import { calculateSymbolsInWord, rotate, shuffleArray } from "./utils";
 
 const SAVES_STATE_KEY = '__words_state';
-const SAVES_SESSION_KEY = '__words_session';
 const LVL_NUMS = 3;
 
 export enum UIStates {

@@ -7,4 +7,6 @@ export const GameEventBus = {
   wordFailed: new TypedEvent<void>(),
   wordExisted: new TypedEvent<void>(),
   uiStateChanged: new TypedEvent<UIStates>(),
+  sessionExpired: new TypedEvent<void>(),
+  tabVisibilityChanged: new TypedEvent<boolean>(),
 };

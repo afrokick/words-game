@@ -33,3 +33,7 @@ export function calculateSymbolsInWord(word: string) {
 
   return totalSymbols;
 }
+
+export function getRandomString() {
+  return Date.now() + '_' + Math.round(Math.random() * 1000000);
+};
