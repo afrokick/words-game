@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { onEvent } from "../lib/hooks";
-  import { GlobalStore } from "../lib/store";
   import { wait } from "../lib/utils";
 
   export let symbol: string;
@@ -9,20 +8,6 @@
   export let y: number;
   export let index: number;
   export let picked: boolean;
-
-  const onMouseDown = () => {
-    GlobalStore.pickSymbol(index);
-  };
-
-  const onMouseUp = () => {
-    GlobalStore.finishInput();
-  };
-
-  const onMouseOver = () => {
-    if (GlobalStore.isPossibleToSelect(index)) {
-      GlobalStore.pickSymbol(index);
-    }
-  };
 
   let existed = false;
   let playingAnim: "scaling" | "shaking" | "" = "";
@@ -65,9 +50,7 @@
     class:existed
     class:playScalingAnim={playingAnim === "scaling"}
     class:playShakingAnim={playingAnim === "shaking"}
-    on:mousedown={onMouseDown}
-    on:mouseover={onMouseOver}
-    on:mouseup={onMouseUp}
+    data-index={index}
   >
     <span class="symbol">{symbol}</span>
   </div>
@@ -146,5 +129,6 @@
     line-height: 1.1;
     font-weight: 700;
     margin: auto;
+    pointer-events: none;
   }
 </style>

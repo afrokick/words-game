@@ -19,9 +19,40 @@
   onEvent("wordFailed", () => (store = GlobalStore));
   onEvent("wordExisted", () => (store = GlobalStore));
   onEvent("uiStateChanged", () => (store = GlobalStore));
+
+  const onPointerUp = () => store.finishInput();
+
+  const onPointerDown = (e: PointerEvent) => {
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    if (!el) return;
+    if (!el.classList.contains("possible-symbol")) return;
+
+    const index = parseInt(el.getAttribute("data-index") || "-1", 10);
+    if (index < 0) return;
+
+    GlobalStore.pickSymbol(index);
+  };
+
+  const onPointerMove = (e: PointerEvent) => {
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    if (!el) return;
+    if (!el.classList.contains("possible-symbol")) return;
+
+    const index = parseInt(el.getAttribute("data-index") || "-1", 10);
+    if (index < 0) return;
+
+    if (GlobalStore.isPossibleToSelect(index)) {
+      GlobalStore.pickSymbol(index);
+    }
+  };
 </script>
 
-<div class="game" on:mouseup={() => store.finishInput()}>
+<div
+  class="game"
+  on:pointerdown={onPointerDown}
+  on:pointerup={onPointerUp}
+  on:pointermove={onPointerMove}
+>
   <p class="lvl">{lvlText}</p>
   <div class="words">
     {#each words as wordInfo, i (i)}
