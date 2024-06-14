@@ -14,6 +14,7 @@
     border-radius: 20rem;
     display: flex;
     background-color: var(--words-green-color);
+    padding-bottom: 6rem;
   }
 
   .symbol-cell.hidden {
