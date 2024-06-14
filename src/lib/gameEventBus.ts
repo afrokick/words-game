@@ -10,4 +10,7 @@ export const GameEventBus = {
   sessionExpired: new TypedEvent<void>(),
   sessionUpdated: new TypedEvent<void>(),
   tabVisibilityChanged: new TypedEvent<boolean>(),
+  relativePointerChanged: new TypedEvent<{ x: number, y: number; } | null>(),
+  windowResized: new TypedEvent<void>(),
+  lineChanged: new TypedEvent<void>(),
 };

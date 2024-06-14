@@ -2,6 +2,7 @@ import './app.css';
 import App from './App.svelte';
 import { GameEventBus } from './lib/gameEventBus';
 import { MultiSessions } from './lib/multiSessions';
+import { GlobalStore } from './lib/store';
 
 const app = new App({
   target: document.getElementById('app')!,
@@ -14,6 +15,9 @@ const updateFontSize = () => {
   const max = 1;
   const fontSize = Math.min(Math.max(window.innerHeight / 1136, min), max);
   document.documentElement.style.fontSize = fontSize + 'px';
+  GlobalStore.windowSize.x = window.innerWidth;
+  GlobalStore.windowSize.y = window.innerHeight;
+  GameEventBus.windowResized.emit();
 };
 
 window.addEventListener('resize', updateFontSize);

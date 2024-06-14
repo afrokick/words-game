@@ -11,6 +11,8 @@ export enum UIStates {
   win,
 }
 
+type Point = { x: number, y: number; };
+
 class Store {
   uiState = UIStates.loading;
 
@@ -22,8 +24,22 @@ class Store {
       words: [],
     };
 
-  symbols: { char: string, x: number, y: number; }[] = [];
+  symbols: ({ char: string, } & Point)[] = [];
   pickedSymbolsIndicies: number[] = [];
+
+  relativePointerPosition: Point | null = null;
+
+  relativeLinePoints: Point[] = [];
+
+  windowSize: Point = { x: 0, y: 0 };
+
+  getWindowPoint(relX: number, relY: number): Point {
+    return { x: relX * this.windowSize.x, y: relY * this.windowSize.y };
+  };
+
+  getWindowLinePoints(): Point[] {
+    return this.relativeLinePoints.map(p => this.getWindowPoint(p.x, p.y));
+  }
 
   async launchGame() {
     await this.loadState();
@@ -125,6 +141,9 @@ class Store {
     const word = this.pickedSymbolsIndicies.map(i => this.symbols[i].char).join('');
 
     this.pickedSymbolsIndicies.length = 0;
+    this.relativePointerPosition = null;
+    this.relativeLinePoints.length = 0;
+    GameEventBus.lineChanged.emit();
 
     for (const wordInfo of this.persistedState.words) {
       if (wordInfo.word !== word) continue;
@@ -170,6 +189,29 @@ class Store {
     if (str) {
       this.persistedState = JSON.parse(str);
     }
+  }
+
+  processPointerMove(clientX: number, clientY: number): void {
+    const relX = clientX / this.windowSize.x;
+    const relY = clientY / this.windowSize.y;
+
+    if (!this.relativePointerPosition) {
+      this.relativePointerPosition = { x: relX, y: relY };
+    } else {
+      this.relativePointerPosition.x = relX;
+      this.relativePointerPosition.y = relY;
+    }
+
+    GameEventBus.relativePointerChanged.emit(this.relativePointerPosition);
+    GameEventBus.lineChanged.emit();
+  }
+
+  addWindowLinePoint(x: number, y: number): void {
+    const relX = x / this.windowSize.x;
+    const relY = y / this.windowSize.y;
+
+    this.relativeLinePoints.push({ x: relX, y: relY });
+    GameEventBus.lineChanged.emit();
   }
 }
 

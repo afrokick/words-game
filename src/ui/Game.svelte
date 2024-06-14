@@ -4,6 +4,7 @@
   import SymbolCell from "./SymbolCell.svelte";
   import { onEvent } from "../lib/hooks";
   import { GlobalStore } from "../lib/store";
+  import Line from "./Line.svelte";
 
   let store = GlobalStore;
 
@@ -20,28 +21,46 @@
   onEvent("wordExisted", () => (store = GlobalStore));
   onEvent("uiStateChanged", () => (store = GlobalStore));
 
-  const onPointerUp = () => store.finishInput();
+  const onPointerUp = () => {
+    store.finishInput();
+  };
 
   const onPointerDown = (e: PointerEvent) => {
     const el = document.elementFromPoint(e.clientX, e.clientY);
     if (!el) return;
+
+    store.processPointerMove(e.clientX, e.clientY);
+
     if (!el.classList.contains("possible-symbol")) return;
 
     const index = parseInt(el.getAttribute("data-index") || "-1", 10);
     if (index < 0) return;
 
+    const rect = (el as HTMLElement).getBoundingClientRect();
+    const x = rect.x + rect.width / 2;
+    const y = rect.y + rect.height / 2;
+
+    GlobalStore.addWindowLinePoint(x, y);
     GlobalStore.pickSymbol(index);
   };
 
   const onPointerMove = (e: PointerEvent) => {
     const el = document.elementFromPoint(e.clientX, e.clientY);
     if (!el) return;
+
+    store.processPointerMove(e.clientX, e.clientY);
+
     if (!el.classList.contains("possible-symbol")) return;
 
     const index = parseInt(el.getAttribute("data-index") || "-1", 10);
     if (index < 0) return;
 
+    const rect = (el as HTMLElement).getBoundingClientRect();
+    const x = rect.x + rect.width / 2;
+    const y = rect.y + rect.height / 2;
+
     if (GlobalStore.isPossibleToSelect(index)) {
+      GlobalStore.addWindowLinePoint(x, y);
       GlobalStore.pickSymbol(index);
     }
   };
@@ -82,6 +101,7 @@
       />
     {/each}
   </div>
+  <Line />
 </div>
 
 <style>
@@ -125,7 +145,7 @@
   .circle {
     --circle-color: #3e4a68;
     --circle-size: 294rem;
-    --ring-width: 20rem;
+    --ring-width: 24rem;
 
     margin-top: 40rem;
     position: relative;
