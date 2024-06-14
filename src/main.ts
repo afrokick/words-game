@@ -1,4 +1,3 @@
-import './app.css';
 import App from './App.svelte';
 import { GameEventBus } from './lib/gameEventBus';
 import { MultiSessions } from './lib/multiSessions';
